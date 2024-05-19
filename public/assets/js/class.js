@@ -57,3 +57,64 @@ class BigMonster extends Character {
         this.life = 120;
     }
 }
+
+class Stage {
+    constructor(char, monster, charEl, monsterEl) {
+        this.char = char;
+        this.monster = monster;
+        this.charEl = charEl;
+        this.monsterEl = monsterEl;
+    }
+
+    start() {
+        this.update();
+
+        // Char Attack
+        this.charEl.querySelector('.btn-attack').addEventListener('click', () => {
+            this.attack(this.char, this.monster);
+        })
+
+        // Monster Attack
+        this.monsterEl.querySelector('.btn-attack').addEventListener('click', () => {
+            this.attack(this.monster, this.char);
+        })
+    }
+
+    update() {
+        // Char
+        this.charEl.querySelector('.info').innerText = `${this.char.name} - ${this.char.life} HP`;
+        let calcCharHP = this.char.life / this.char.maxLife * 100;
+        this.charEl.querySelector('.lifebar').style.width = `${calcCharHP}%`;
+
+        // Monster
+        this.monsterEl.querySelector('.info').innerText = `${this.monster.name} - ${this.monster.life} HP`;
+        let calcMonsterHP = this.monster.life / this.monster.maxLife * 100;
+        this.monsterEl.querySelector('.lifebar').style.width = `${calcMonsterHP}%`;
+    }
+
+    attack(attacker, defender) {
+        if (attacker.life < 1) {
+            console.log(`${attacker.name} está morto e não pode atacar.`);
+            return;
+        }
+
+        if (defender.life < 1) {
+            console.log(`${defender.name} já está morto.`);
+            return;
+        }
+
+        const attackFactor = Math.random() * 2;
+        const defenderFactor = Math.random() * 2;
+        const actualAttack = Math.trunc(attackFactor * attacker.attack);
+        const actualDefense = Math.trunc(defenderFactor * defender.defense);
+        
+        if (actualDefense < actualAttack) {
+            defender.life -= actualAttack;
+            console.log(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
+        } else {
+            console.log(`${defender.name} defendeu o ataque de ${attacker.name}.`);
+        }
+
+        this.update();
+    }
+}
