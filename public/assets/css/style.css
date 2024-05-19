@@ -10,13 +10,13 @@
     flex-direction: column;
 }
 
-.lifebar {
+.bar {
     border: 1px solid #000;
     border-radius: 5px;
     height: 10px;
 }
 
-.bar {
+.lifebar {
     background-color: #f00;
     border-radius: 5px;
     height: inherit;
