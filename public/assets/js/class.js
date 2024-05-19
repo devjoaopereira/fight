@@ -59,11 +59,12 @@ class BigMonster extends Character {
 }
 
 class Stage {
-    constructor(char, monster, charEl, monsterEl) {
+    constructor(char, monster, charEl, monsterEl, log) {
         this.char = char;
         this.monster = monster;
         this.charEl = charEl;
         this.monsterEl = monsterEl;
+        this.log = log;
     }
 
     start() {
@@ -94,12 +95,12 @@ class Stage {
 
     attack(attacker, defender) {
         if (attacker.life < 1) {
-            console.log(`${attacker.name} está morto e não pode atacar.`);
+            this.log.addLog(`${attacker.name} está morto e não pode atacar.`);
             return;
         }
 
         if (defender.life < 1) {
-            console.log(`${defender.name} já está morto.`);
+            this.log.addLog(`${defender.name} já está morto.`);
             return;
         }
 
@@ -110,11 +111,34 @@ class Stage {
         
         if (actualDefense < actualAttack) {
             defender.life -= actualAttack;
-            console.log(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
+            this.log.addLog(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
         } else {
-            console.log(`${defender.name} defendeu o ataque de ${attacker.name}.`);
+            this.log.addLog(`${defender.name} defendeu o ataque de ${attacker.name}.`);
         }
 
         this.update();
+    }
+}
+
+class Log {
+    logs = [];
+    
+    constructor(logEl) {
+        this.logEl = logEl;
+    }
+
+    addLog(message) {
+        this.logs.unshift(message);
+        this.showLog();
+    }
+
+    showLog() {
+        this.logEl.innerHTML = '';
+
+        for (log of this.logs) {
+            let liEl = document.createElement('li');
+            liEl.innerText = log;
+            this.logEl.appendChild(liEl);
+        }
     }
 }
