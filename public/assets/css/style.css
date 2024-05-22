@@ -33,6 +33,12 @@
     height: inherit;
 }
 
+.info {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 20px 0;
+}
+
 .log-area {
     border: 1px dotted #aaa;
     height: 200px;
