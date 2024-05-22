@@ -77,12 +77,14 @@ class Stage {
 
         // Char
         this.portrait(this.char, this.charEl);
+        this.info(this.char, this.charEl);
         this.charEl.querySelector('.btn-attack').addEventListener('click', () => {
             this.attack(this.char, this.monster);
         })
 
         // Monster
         this.portrait(this.monster, this.monsterEl);
+        this.info(this.monster, this.monsterEl);
         this.monsterEl.querySelector('.btn-attack').addEventListener('click', () => {
             this.attack(this.monster, this.char);
         })
@@ -92,6 +94,7 @@ class Stage {
         let actualHP = (character, characterEl) => {
             let calcHP = character.life / character.maxLife * 100;
             characterEl.querySelector('.lifebar').style.width = `${calcHP}%`;
+            characterEl.querySelector('.info > .hp').innerText = `HP: ${character.life}`;
             
             if (calcHP < 11) {
                 characterEl.querySelector('.lifebar').style.backgroundColor = '#f00';
@@ -100,11 +103,9 @@ class Stage {
         
         // Char
         actualHP(this.char, this.charEl);
-        this.charEl.querySelector('.info').innerText = `${this.char.name} - ${this.char.life} HP`;
 
         // Monster
         actualHP(this.monster, this.monsterEl);
-        this.monsterEl.querySelector('.info').innerText = `${this.monster.name} - ${this.monster.life} HP`;
     }
 
     attack(attacker, defender) {
@@ -138,6 +139,12 @@ class Stage {
         imgEl.src = character.portrait;
 
         characterEl.querySelector('.portrait').appendChild(imgEl);
+    }
+
+    info(character, characterEl) {
+        characterEl.querySelector('.info').innerHTML += `<span># Name: ${character.name}</span>`;
+        characterEl.querySelector('.info').innerHTML += `<span># Attack: ${character.attack}</span>`;
+        characterEl.querySelector('.info').innerHTML += `<span># Defense: ${character.defense}</span>`;
     }
 }
 
