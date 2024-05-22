@@ -79,14 +79,14 @@ class Stage {
         this.portrait(this.char, this.charEl);
         this.info(this.char, this.charEl);
         this.charEl.querySelector('.btn-attack').addEventListener('click', () => {
-            this.attack(this.char, this.monster);
+            this.attack(this.char, this.monster, this.charEl, this.monsterEl);
         })
 
         // Monster
         this.portrait(this.monster, this.monsterEl);
         this.info(this.monster, this.monsterEl);
         this.monsterEl.querySelector('.btn-attack').addEventListener('click', () => {
-            this.attack(this.monster, this.char);
+            this.attack(this.monster, this.char, this.monsterEl, this.charEl);
         })
     }
 
@@ -108,7 +108,7 @@ class Stage {
         actualHP(this.monster, this.monsterEl);
     }
 
-    attack(attacker, defender) {
+    attack(attacker, defender, attackerEl, defenderEl) {
         if (attacker.life < 1) {
             this.log.addLog(`${attacker.name} está morto e não pode atacar.`);
             return;
@@ -119,6 +119,9 @@ class Stage {
             return;
         }
 
+        attackerEl.querySelector('.btn-attack').setAttribute('disabled', '');
+        defenderEl.querySelector('.btn-attack').removeAttribute('disabled');
+
         const attackFactor = Math.random() * 2;
         const defenderFactor = Math.random() * 2;
         const actualAttack = Math.trunc(attackFactor * attacker.attack);
@@ -127,6 +130,11 @@ class Stage {
         if (actualDefense < actualAttack) {
             defender.life -= actualAttack;
             this.log.addLog(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
+
+            if (defender.life < 1) {
+                attackerEl.querySelector('.btn-attack').removeAttribute('disabled');
+                defenderEl.querySelector('.btn-attack').removeAttribute('disabled');
+            }
         } else {
             this.log.addLog(`${defender.name} defendeu o ataque de ${attacker.name}.`);
         }
