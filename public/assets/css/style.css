@@ -2,6 +2,20 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+body {
+    background-attachment: fixed;
+    background-image: url('../img/battleground.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 .fight-area {
     display: flex;
     gap: 20px;
@@ -20,9 +34,10 @@
 }
 
 .portrait > img {
-    border-radius: 50%;
-    max-width: 350px;
-    box-shadow: 3px 3px 3px #000;
+    border: 1px solid #fff;
+    border-radius: 2%;
+    max-width: 400px;
+    padding: 4px;
 }
 
 .bar {
@@ -38,22 +53,24 @@
 }
 
 .info {
+    color: #fff;
     display: flex;
     flex-direction: column;
     margin: 10px 0 20px 0;
 }
 
 .btn-attack {
-    background-color: #000;
+    background-color: #fff;
     border: none;
     border-radius: 5px;
-    color: #fff;
+    color: #000;
     cursor: pointer;
     height: 40px;
     text-transform: uppercase;
 }
 
 .btn-attack:disabled {
+    color: #fff;
     cursor: not-allowed;
     background-color: #f00;
     opacity: .5;
@@ -61,6 +78,7 @@
 
 .log-area {
     border: 1px dotted #aaa;
+    color: #fff;
     height: 200px;
     margin-top: 20px;
     overflow-y: scroll;
