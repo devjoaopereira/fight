@@ -54,3 +54,94 @@ const createBigMonster = () => {
         portrait: 'assets/img/bigmonster.jpeg',
     }
 }
+
+const stage = {
+    char: null,
+    monster: null,
+    charEl: null,
+    monsterEl: null,
+    start(char, monster, charEl, monsterEl) {
+        this.char = char;
+        this.monster = monster;
+        this.charEl = charEl;
+        this.monsterEl = monsterEl;
+
+        this.update();
+
+        // Char
+        this.portrait(this.char, this.charEl);
+        this.info(this.char, this.charEl);
+        this.charEl.querySelector('.btn-attack').addEventListener('click', () => {
+            this.attack(this.char, this.monster, this.charEl, this.monsterEl);
+        });
+
+        // Monster
+        this.portrait(this.monster, this.monsterEl);
+        this.info(this.monster, this.monsterEl);
+        this.monsterEl.querySelector('.btn-attack').addEventListener('click', () => {
+            this.attack(this.monster, this.char, this.monsterEl, this.charEl);
+        });
+    },
+    update() {
+        let actualHP = (character, characterEl) => {
+            let calcHP = character.life / character.maxLife * 100;
+            characterEl.querySelector('.lifebar').style.width = `${calcHP}%`;
+            characterEl.querySelector('.info > .hp').innerText = `HP: ${character.life}`;
+            
+            if (calcHP < 11) {
+                characterEl.querySelector('.lifebar').style.backgroundColor = '#f00';
+            }
+        }
+        
+        // Char
+        actualHP(this.char, this.charEl);
+
+        // Monster
+        actualHP(this.monster, this.monsterEl);
+    },
+    attack(attacker, defender, attackerEl, defenderEl) {
+        if (attacker.life < 1) {
+            console.log(`${attacker.name} está morto e não pode atacar.`);
+            return;
+        }
+
+        if (defender.life < 1) {
+            console.log(`${defender.name} já está morto.`);
+            return;
+        }
+
+        attackerEl.querySelector('.btn-attack').setAttribute('disabled', '');
+        defenderEl.querySelector('.btn-attack').removeAttribute('disabled');
+
+        const attackFactor = Math.random() * 2;
+        const defenderFactor = Math.random() * 2;
+        const actualAttack = Math.trunc(attackFactor * attacker.attack);
+        const actualDefense = Math.trunc(defenderFactor * defender.defense);
+        
+        if (actualDefense < actualAttack) {
+            defender.life -= actualAttack;
+            defender.life = defender.life < 1 ? 0 : defender.life;
+            console.log(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
+
+            if (defender.life < 1) {
+                attackerEl.querySelector('.btn-attack').removeAttribute('disabled');
+                defenderEl.querySelector('.btn-attack').removeAttribute('disabled');
+            }
+        } else {
+            console.log(`${defender.name} defendeu o ataque de ${attacker.name}.`);
+        }
+
+        this.update();
+    },
+    portrait(character, characterEl) {
+        const imgEl = document.createElement('img');
+        imgEl.src = character.portrait;
+
+        characterEl.querySelector('.portrait').appendChild(imgEl);
+    },
+    info(character, characterEl) {
+        characterEl.querySelector('.info').innerHTML += `<span># Name: ${character.name}</span>`;
+        characterEl.querySelector('.info').innerHTML += `<span># Attack: ${character.attack}</span>`;
+        characterEl.querySelector('.info').innerHTML += `<span># Defense: ${character.defense}</span>`;
+    }
+}
