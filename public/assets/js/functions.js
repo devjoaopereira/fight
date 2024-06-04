@@ -101,12 +101,12 @@ const stage = {
     },
     attack(attacker, defender, attackerEl, defenderEl) {
         if (attacker.life < 1) {
-            console.log(`${attacker.name} está morto e não pode atacar.`);
+            log.addLog(`${attacker.name} está morto e não pode atacar.`);
             return;
         }
 
         if (defender.life < 1) {
-            console.log(`${defender.name} já está morto.`);
+            log.addLog(`${defender.name} já está morto.`);
             return;
         }
 
@@ -121,14 +121,14 @@ const stage = {
         if (actualDefense < actualAttack) {
             defender.life -= actualAttack;
             defender.life = defender.life < 1 ? 0 : defender.life;
-            console.log(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
+            log.addLog(`${attacker.name} causou ${actualAttack} de dano em ${defender.name}.`);
 
             if (defender.life < 1) {
                 attackerEl.querySelector('.btn-attack').removeAttribute('disabled');
                 defenderEl.querySelector('.btn-attack').removeAttribute('disabled');
             }
         } else {
-            console.log(`${defender.name} defendeu o ataque de ${attacker.name}.`);
+            log.addLog(`${defender.name} defendeu o ataque de ${attacker.name}.`);
         }
 
         this.update();
@@ -143,5 +143,24 @@ const stage = {
         characterEl.querySelector('.info').innerHTML += `<span># Name: ${character.name}</span>`;
         characterEl.querySelector('.info').innerHTML += `<span># Attack: ${character.attack}</span>`;
         characterEl.querySelector('.info').innerHTML += `<span># Defense: ${character.defense}</span>`;
+    }
+}
+
+const log = {
+    logs: [],
+    addLog(message)  {
+        this.logs.unshift(message);
+        this.showLog();
+    },
+    showLog() {
+        const logEl = document.querySelector('#log');
+        logEl.innerHTML = '';
+
+        for (let log of this.logs) {
+            let liEl = document.createElement('li');
+            liEl.innerText = log;
+
+            logEl.appendChild(liEl);
+        }
     }
 }
