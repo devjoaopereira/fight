@@ -1,15 +1,9 @@
-let char = new Knight('Venethok');
-let monster = new BigMonster();
-let log = new Log(document.querySelector('#log'));
-const charEl = document.querySelector('#char');
-const monsterEl = document.querySelector('#monster');
+let char = createKnight('Venethok');
+let monster = createBigMonster();
 
-const stage = new Stage(
+stage.start(
     char,
     monster,
-    charEl,
-    monsterEl,
-    log
+    document.querySelector('#char'),
+    document.querySelector('#monster')
 );
-
-stage.start();
